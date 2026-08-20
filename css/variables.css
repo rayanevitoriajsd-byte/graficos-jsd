@@ -1,34 +1,26 @@
 :root {
-  /* Superfícies */
-  --bg: #0C0E14;
-  --surface: #151822;
-  --surface-2: #1B1F2B;
-  --border: rgba(255, 255, 255, 0.08);
-  --border-strong: rgba(255, 255, 255, 0.14);
-
-  /* Texto */
-  --text: #EDEFF4;
-  --text-dim: #8891A6;
-  --text-faint: #565D70;
-
-  /* Acentos */
-  --gold: #F5B942;
-  --gold-ink: #241902;
-  --teal: #4FD1C5;
-  --coral: #FF7A6E;
-  --violet: #9B8CFA;
-  --blue: #6FA8DC;
-  --pink: #E0A9E8;
-
-  /* Tipografia */
-  --font-display: 'Space Grotesk', sans-serif;
-  --font-body: 'Inter', sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
-
-  /* Layout */
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-pill: 999px;
-  --gap: 16px;
+  --bg: #f4f7f8;
+  --surface: #ffffff;
+  --surface-soft: #f7f9fa;
+  --ink: #18262b;
+  --muted: #66777d;
+  --faint: #94a2a7;
+  --border: #e1e8ea;
+  --primary: #145d56;
+  --primary-dark: #0b453f;
+  --primary-soft: #e4f1ef;
+  --lime: #b8d95b;
+  --active: #e9a23b;
+  --active-soft: #fff2d8;
+  --receptive: #2e8279;
+  --receptive-soft: #dff0ed;
+  --blue: #4c7fc2;
+  --blue-soft: #e8f0fb;
+  --purple: #765ea8;
+  --purple-soft: #eee9f8;
+  --danger: #c24f4f;
+  --shadow: 0 12px 36px rgba(34, 59, 65, .07);
+  --shadow-sm: 0 4px 18px rgba(34, 59, 65, .055);
+  --font-display: "Manrope", sans-serif;
+  --font-body: "DM Sans", sans-serif;
 }
