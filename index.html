@@ -1,137 +1,152 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Relance — painel de dados</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Painel operacional de atendimento da JSD Telecom.">
+  <title>JSD Telecom — Painel Operacional</title>
   <link rel="icon" href="data:,">
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/components.css">
-
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 </head>
 <body>
-
-  <div class="rl-root">
-
-    <header class="rl-header">
-      <div class="rl-header-text">
-        <p class="rl-eyebrow">Relance · painel de dados</p>
-        <h1 class="rl-title">Seus dados, num relance.</h1>
-        <p class="rl-sub">Envie um CSV e veja os números que importam em segundos — sem planilha, sem filtro, sem esforço.</p>
-        <span id="rl-source-badge" class="rl-badge"></span>
-      </div>
-      <div class="rl-header-actions">
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="JSD Telecom, início">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+        <span><strong>JSD Telecom</strong><small>inteligência operacional</small></span>
+      </a>
+      <div class="topbar-meta">
+        <span id="rl-date-range" class="date-pill"><span class="rl-icon" data-icon="calendar"></span> Período atual</span>
+        <span class="live-pill"><i></i> Atualizado</span>
         <input id="rl-file-input" type="file" accept=".csv,text/csv" hidden>
-        <button id="rl-upload-btn" class="rl-upload-btn">
+        <button id="rl-upload-btn" class="upload-btn" type="button">
           <span class="rl-icon" data-icon="upload"></span>
-          Carregar CSV
+          Importar CSV
         </button>
       </div>
     </header>
 
-    <div id="rl-dropzone" class="rl-dropzone">
-      <span class="rl-icon" data-icon="file"></span>
-      <span>Arraste um arquivo <strong>.csv</strong> aqui, ou clique para escolher — a primeira coluna vira o eixo, o resto é detectado automaticamente.</span>
-    </div>
-
-    <div id="rl-error" class="rl-error" hidden></div>
-
-    <section class="rl-summary">
-      <div class="rl-summary-head">
-        <h3><span class="rl-icon" data-icon="wand"></span> Resumo de texto</h3>
-      </div>
-      <textarea id="rl-summary-input" class="rl-textarea" placeholder="Cole aqui um relatório, e-mail ou anotações para resumir em poucos pontos..."></textarea>
-      <div class="rl-summary-row">
-        <span id="rl-char-count" class="rl-char-count">0 caracteres</span>
-        <button id="rl-summarize-btn" class="rl-summarize-btn">
-          <span class="rl-icon" data-icon="sparkles"></span>
-          <span id="rl-summarize-label">Resumir texto</span>
-        </button>
-      </div>
-      <p id="rl-summary-error" class="rl-summary-error" hidden></p>
-      <div id="rl-summary-result" class="rl-summary-result" hidden></div>
-    </section>
-
-    <div id="rl-ingest" class="ingest" hidden>
-      <div class="ingest-grid"></div>
-      <div class="ingest-scan"></div>
-      <div class="ingest-content">
-        <span class="rl-icon rl-icon-lg" data-icon="file"></span>
-        <p id="rl-ingest-file" class="ingest-file"></p>
-        <p class="ingest-count"><span id="rl-ingest-count">0</span> <span class="ingest-count-total">/ <span id="rl-ingest-total">0</span> linhas lidas</span></p>
-        <div class="ingest-bar"><div id="rl-ingest-bar-fill" class="ingest-bar-fill"></div></div>
-      </div>
-    </div>
-
-    <div id="rl-empty" class="rl-panel" hidden>
-      <p class="rl-empty">Não encontramos colunas numéricas nesse arquivo. Verifique se o CSV tem uma coluna de valores.</p>
-    </div>
-
-    <main id="rl-dashboard" hidden>
-
-      <section id="rl-kpi-grid" class="rl-kpi-grid"></section>
-
-      <section class="rl-panel">
-        <div class="rl-panel-head"><h3 class="rl-panel-title" id="rl-main-chart-title">Valor ao longo do tempo</h3></div>
-        <p class="rl-panel-sub" id="rl-main-chart-sub"></p>
-        <div class="rl-chart-wrap rl-chart-tall">
-          <canvas id="rl-main-chart" role="img" aria-label="Gráfico de área mostrando a evolução do valor principal ao longo do tempo"></canvas>
+    <main class="page">
+      <section class="hero">
+        <div>
+          <p class="eyebrow">JSD Telecom · Atendimento</p>
+          <h1>Painel operacional</h1>
+          <p class="hero-copy">Volume, tempo e qualidade em um só lugar.</p>
         </div>
-        <div id="rl-main-legend" class="rl-legend"></div>
+        <div class="hero-status">
+          <span id="rl-source-badge" class="source-badge"></span>
+          <span id="rl-last-update" class="last-update"></span>
+        </div>
       </section>
 
-      <section class="rl-grid-2">
-        <div class="rl-panel">
-          <div class="rl-panel-head"><h3 class="rl-panel-title" id="rl-bar-title">Maiores valores</h3></div>
-          <p class="rl-panel-sub" id="rl-bar-sub"></p>
-          <div class="rl-chart-wrap">
-            <canvas id="rl-bar-chart" role="img" aria-label="Gráfico de barras comparando categorias"></canvas>
+      <section class="control-panel" aria-label="Filtros do relatório">
+        <div class="filter-copy">
+          <span class="control-icon"><span class="rl-icon" data-icon="users"></span></span>
+          <div><strong>Filtrar por pessoa</strong><small>Atualiza todo o painel</small></div>
+        </div>
+        <div class="select-wrap">
+          <label for="rl-agent-filter">Pessoa</label>
+          <select id="rl-agent-filter" aria-label="Filtrar os relatórios por pessoa"></select>
+          <span class="rl-icon select-chevron" data-icon="chevron-down"></span>
+        </div>
+      </section>
+
+      <div id="rl-error" class="alert" role="alert" hidden></div>
+      <section id="rl-profile" class="profile-card" aria-live="polite"></section>
+
+      <section class="section-block" aria-labelledby="volume-title">
+        <div class="section-heading">
+          <div><p class="eyebrow">Volume</p><h2 id="volume-title">Atendimentos</h2></div>
+          <span id="rl-scope-label" class="scope-label"></span>
+        </div>
+        <div id="rl-volume-kpis" class="volume-grid"></div>
+      </section>
+
+      <section class="section-block" aria-labelledby="kpi-title">
+        <div class="section-heading">
+          <div><p class="eyebrow">Eficiência & qualidade</p><h2 id="kpi-title">KPIs do atendimento</h2></div>
+          <span class="info-tip" title="Médias ponderadas pelos atendimentos">i</span>
+        </div>
+        <div id="rl-service-kpis" class="service-grid"></div>
+      </section>
+
+      <section class="dashboard-grid">
+        <article class="panel chart-panel">
+          <div class="panel-head">
+            <div><p class="panel-kicker">Chamadas por data</p><h3>Volume diário</h3></div>
+            <div class="chart-legend"><span><i class="active-dot"></i>Ativos</span><span><i class="receptive-dot"></i>Receptivos</span><span><i class="total-dot"></i>Total</span></div>
           </div>
-        </div>
+          <p class="panel-summary">Quantidade de chamadas atendidas em cada dia.</p>
+          <div class="chart-wrap"><canvas id="rl-trend-chart" role="img" aria-label="Número de chamadas ativas e receptivas por data"></canvas></div>
+        </article>
 
-        <div class="rl-panel">
-          <div class="rl-panel-head"><h3 class="rl-panel-title">Participação</h3></div>
-          <p class="rl-panel-sub" id="rl-donut-sub"></p>
-          <div class="rl-chart-wrap rl-chart-donut">
-            <canvas id="rl-donut-chart" role="img" aria-label="Gráfico de rosca mostrando a participação de cada categoria no total"></canvas>
+        <article class="panel chart-panel">
+          <div class="panel-head">
+            <div><p class="panel-kicker">Tempo por data</p><h3>TME × TMA</h3></div>
+            <div class="chart-legend"><span><i class="tme-dot"></i>TME</span><span><i class="tma-dot"></i>TMA</span></div>
           </div>
-          <div id="rl-donut-legend" class="rl-legend"></div>
-        </div>
+          <p class="panel-summary">Espera e duração média ao longo do período.</p>
+          <div class="chart-wrap"><canvas id="rl-time-chart" role="img" aria-label="TME e TMA médios por data"></canvas></div>
+        </article>
       </section>
 
-      <section class="rl-panel">
-        <div id="rl-table-toggle" class="rl-table-toggle">
-          <span class="rl-icon" data-icon="table"></span>
-          <span id="rl-table-toggle-label">Ver linhas de dados brutos</span>
-          <span class="rl-icon" data-icon="chevron-down" id="rl-table-chevron"></span>
-        </div>
-        <div id="rl-table-wrap" class="rl-table-wrap" hidden>
-          <table class="rl-table">
-            <thead id="rl-table-head"></thead>
-            <tbody id="rl-table-body"></tbody>
-          </table>
-        </div>
+      <section class="insights-grid">
+        <article class="panel ranking-panel" aria-labelledby="ranking-title">
+          <div class="panel-head ranking-head">
+            <div><p class="panel-kicker">Equipe</p><h3 id="ranking-title">Top 10 atendimentos</h3></div>
+            <span class="ranking-note">por volume</span>
+          </div>
+          <div class="ranking-grid">
+            <div class="ranking-column">
+              <div class="ranking-title"><span><i class="active-dot"></i>Ativos</span><strong id="rl-active-ranking-total"></strong></div>
+              <div id="rl-active-ranking" class="ranking-list"></div>
+            </div>
+            <div class="ranking-column">
+              <div class="ranking-title"><span><i class="receptive-dot"></i>Receptivos</span><strong id="rl-receptive-ranking-total"></strong></div>
+              <div id="rl-receptive-ranking" class="ranking-list"></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="panel mix-panel">
+          <div class="panel-head"><div><p class="panel-kicker">Canais</p><h3>Distribuição</h3></div></div>
+          <div class="donut-wrap"><canvas id="rl-mix-chart" role="img" aria-label="Distribuição entre atendimentos ativos e receptivos"></canvas><div id="rl-donut-center" class="donut-center"></div></div>
+          <div id="rl-mix-legend" class="mix-legend"></div>
+        </article>
       </section>
 
+      <section class="import-card">
+        <div>
+          <span class="import-icon"><span class="rl-icon" data-icon="file"></span></span>
+          <div><strong>Atualize o painel com seus dados</strong><p>Arraste um arquivo CSV aqui ou selecione no seu computador.</p></div>
+        </div>
+        <button id="rl-dropzone" class="dropzone" type="button"><span class="rl-icon" data-icon="upload"></span> Selecionar CSV</button>
+      </section>
+
+      <section id="rl-ingest" class="ingest" hidden>
+        <div class="ingest-copy"><strong id="rl-ingest-file"></strong><span>Lendo <b id="rl-ingest-count">0</b> de <b id="rl-ingest-total">0</b> linhas</span></div>
+        <div class="ingest-bar"><div id="rl-ingest-bar-fill"></div></div>
+      </section>
+
+      <details class="data-details">
+        <summary><span class="rl-icon" data-icon="table"></span> Ver dados importados <span class="rl-icon chevron" data-icon="chevron-down"></span></summary>
+        <div class="table-wrap"><table><thead id="rl-table-head"></thead><tbody id="rl-table-body"></tbody></table></div>
+      </details>
     </main>
-
+    <footer><span>JSD Telecom · Inteligência operacional</span><span>Dados processados localmente.</span></footer>
   </div>
-
   <script src="js/icons.js"></script>
   <script src="js/config.js"></script>
   <script src="js/utils.js"></script>
-  <script src="js/dataAnalysis.js"></script>
   <script src="js/charts.js"></script>
-  <script src="js/summarize.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

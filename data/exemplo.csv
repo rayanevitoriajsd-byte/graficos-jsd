@@ -1,13 +1,9 @@
-Mes,Receita,Novos Clientes,Canal
-Jan,18400,120,Google
-Fev,19850,132,Google
-Mar,21200,145,Organico
-Abr,20100,138,Facebook
-Mai,24300,161,Google
-Jun,26800,178,Organico
-Jul,25950,170,Facebook
-Ago,29100,192,Google
-Set,31400,205,Organico
-Out,33850,221,Google
-Nov,37200,240,Facebook
-Dez,41600,268,Google
+Data,Agente,Ativas,Receptivas,TME,TMA,Aderencia,NS20,Abandono,NPS
+18/08,Lorhana Sandra Neves Sousa,32,78,00:00:35,00:04:24,"98,1%","87,2%","1,6%",92
+19/08,Lorhana Sandra Neves Sousa,34,81,00:00:37,00:04:31,"97,7%","86,5%","1,8%",91
+18/08,Edy Ferreira,39,84,00:00:33,00:04:10,"96,2%","84,1%","2,3%",88
+19/08,Edy Ferreira,37,82,00:00:35,00:04:18,"95,9%","83,5%","2,5%",87
+18/08,Emilie Martins,36,80,00:00:38,00:04:36,"95,6%","89,7%","1,4%",94
+19/08,Emilie Martins,34,78,00:00:40,00:04:42,"95,2%","88,9%","1,6%",93
+18/08,Wilclefison Maia,30,72,00:00:41,00:04:49,"94,9%","82,1%","2,8%",86
+19/08,Wilclefison Maia,29,70,00:00:43,00:04:55,"94,6%","81,2%","3,0%",85
