@@ -1,0 +1,72 @@
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  min-height: 100vh;
+  background-image:
+    radial-gradient(circle at 15% 0%, rgba(245, 185, 66, 0.06), transparent 45%),
+    radial-gradient(circle at 85% 15%, rgba(79, 209, 197, 0.05), transparent 40%);
+  background-attachment: fixed;
+}
+
+::selection {
+  background: rgba(245, 185, 66, 0.3);
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  margin: 0;
+}
+
+p {
+  margin: 0;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+textarea {
+  font-family: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+/* Ícones inline (ver js/icons.js) */
+.rl-icon {
+  display: inline-flex;
+  width: 15px;
+  height: 15px;
+  vertical-align: -3px;
+}
+
+.rl-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.rl-icon-lg {
+  width: 22px;
+  height: 22px;
+}
+
+@keyframes rl-spin {
+  to { transform: rotate(360deg); }
+}
+
+.rl-spin {
+  animation: rl-spin 0.8s linear infinite;
+}

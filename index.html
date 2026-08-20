@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Relance — painel de dados</title>
+  <link rel="icon" href="data:,">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+</head>
+<body>
+
+  <div class="rl-root">
+
+    <header class="rl-header">
+      <div class="rl-header-text">
+        <p class="rl-eyebrow">Relance · painel de dados</p>
+        <h1 class="rl-title">Seus dados, num relance.</h1>
+        <p class="rl-sub">Envie um CSV e veja os números que importam em segundos — sem planilha, sem filtro, sem esforço.</p>
+        <span id="rl-source-badge" class="rl-badge"></span>
+      </div>
+      <div class="rl-header-actions">
+        <input id="rl-file-input" type="file" accept=".csv,text/csv" hidden>
+        <button id="rl-upload-btn" class="rl-upload-btn">
+          <span class="rl-icon" data-icon="upload"></span>
+          Carregar CSV
+        </button>
+      </div>
+    </header>
+
+    <div id="rl-dropzone" class="rl-dropzone">
+      <span class="rl-icon" data-icon="file"></span>
+      <span>Arraste um arquivo <strong>.csv</strong> aqui, ou clique para escolher — a primeira coluna vira o eixo, o resto é detectado automaticamente.</span>
+    </div>
+
+    <div id="rl-error" class="rl-error" hidden></div>
+
+    <section class="rl-summary">
+      <div class="rl-summary-head">
+        <h3><span class="rl-icon" data-icon="wand"></span> Resumo de texto</h3>
+      </div>
+      <textarea id="rl-summary-input" class="rl-textarea" placeholder="Cole aqui um relatório, e-mail ou anotações para resumir em poucos pontos..."></textarea>
+      <div class="rl-summary-row">
+        <span id="rl-char-count" class="rl-char-count">0 caracteres</span>
+        <button id="rl-summarize-btn" class="rl-summarize-btn">
+          <span class="rl-icon" data-icon="sparkles"></span>
+          <span id="rl-summarize-label">Resumir texto</span>
+        </button>
+      </div>
+      <p id="rl-summary-error" class="rl-summary-error" hidden></p>
+      <div id="rl-summary-result" class="rl-summary-result" hidden></div>
+    </section>
+
+    <div id="rl-ingest" class="ingest" hidden>
+      <div class="ingest-grid"></div>
+      <div class="ingest-scan"></div>
+      <div class="ingest-content">
+        <span class="rl-icon rl-icon-lg" data-icon="file"></span>
+        <p id="rl-ingest-file" class="ingest-file"></p>
+        <p class="ingest-count"><span id="rl-ingest-count">0</span> <span class="ingest-count-total">/ <span id="rl-ingest-total">0</span> linhas lidas</span></p>
+        <div class="ingest-bar"><div id="rl-ingest-bar-fill" class="ingest-bar-fill"></div></div>
+      </div>
+    </div>
+
+    <div id="rl-empty" class="rl-panel" hidden>
+      <p class="rl-empty">Não encontramos colunas numéricas nesse arquivo. Verifique se o CSV tem uma coluna de valores.</p>
+    </div>
+
+    <main id="rl-dashboard" hidden>
+
+      <section id="rl-kpi-grid" class="rl-kpi-grid"></section>
+
+      <section class="rl-panel">
+        <div class="rl-panel-head"><h3 class="rl-panel-title" id="rl-main-chart-title">Valor ao longo do tempo</h3></div>
+        <p class="rl-panel-sub" id="rl-main-chart-sub"></p>
+        <div class="rl-chart-wrap rl-chart-tall">
+          <canvas id="rl-main-chart" role="img" aria-label="Gráfico de área mostrando a evolução do valor principal ao longo do tempo"></canvas>
+        </div>
+        <div id="rl-main-legend" class="rl-legend"></div>
+      </section>
+
+      <section class="rl-grid-2">
+        <div class="rl-panel">
+          <div class="rl-panel-head"><h3 class="rl-panel-title" id="rl-bar-title">Maiores valores</h3></div>
+          <p class="rl-panel-sub" id="rl-bar-sub"></p>
+          <div class="rl-chart-wrap">
+            <canvas id="rl-bar-chart" role="img" aria-label="Gráfico de barras comparando categorias"></canvas>
+          </div>
+        </div>
+
+        <div class="rl-panel">
+          <div class="rl-panel-head"><h3 class="rl-panel-title">Participação</h3></div>
+          <p class="rl-panel-sub" id="rl-donut-sub"></p>
+          <div class="rl-chart-wrap rl-chart-donut">
+            <canvas id="rl-donut-chart" role="img" aria-label="Gráfico de rosca mostrando a participação de cada categoria no total"></canvas>
+          </div>
+          <div id="rl-donut-legend" class="rl-legend"></div>
+        </div>
+      </section>
+
+      <section class="rl-panel">
+        <div id="rl-table-toggle" class="rl-table-toggle">
+          <span class="rl-icon" data-icon="table"></span>
+          <span id="rl-table-toggle-label">Ver linhas de dados brutos</span>
+          <span class="rl-icon" data-icon="chevron-down" id="rl-table-chevron"></span>
+        </div>
+        <div id="rl-table-wrap" class="rl-table-wrap" hidden>
+          <table class="rl-table">
+            <thead id="rl-table-head"></thead>
+            <tbody id="rl-table-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
+  <script src="js/icons.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/dataAnalysis.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/summarize.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
