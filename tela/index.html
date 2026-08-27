@@ -1,0 +1,170 @@
+mport { useEffect, useState } from 'react';
+import './App.css';
+
+function App() {
+  const [perfil, setPerfil] = useState(null);
+  const [repositorios, setRepositorios] = useState([]);
+  const [carregando, setCarregando] = useState(true);
+  const [erro, setErro] = useState(null);
+
+  useEffect(() => {
+    const usuario = 'rayanevitoriajsd-byte';
+
+    // URLs corretas da API do GitHub
+    const urlPerfil = https://api.github.com/users/rayanevitoriajsd-byte;
+    const urlRepos = https://api.github.com/users/rayanevitoriajsd-byte/repos;
+
+    // Busca o perfil e os repositórios ao mesmo tempo
+    Promise.all([
+      fetch(urlPerfil).then((res) => {
+        if (!res.ok) {
+          throw new Error('Erro ao buscar perfil');
+        }
+
+        return res.json();
+      }),
+
+      fetch(urlRepos).then((res) => {
+        if (!res.ok) {
+          throw new Error('Erro ao buscar repositórios');
+        }
+
+        return res.json();
+      })
+    ])
+      .then(([dadosPerfil, dadosRepos]) => {
+        setPerfil(dadosPerfil);
+        setRepositorios(dadosRepos);
+        setCarregando(false);
+      })
+      .catch((erro) => {
+        console.error('Erro ao buscar dados do GitHub:', erro);
+        setErro('Não foi possível carregar os dados do GitHub.');
+        setCarregando(false);
+      });
+  }, []);
+
+  // Tela de carregamento
+  if (carregando) {
+    return (
+      <div className="loader-container">
+        <p className="loader-text">
+          Carregando dados do GitHub...
+        </p>
+      </div>
+    );
+  }
+
+  // Tela de erro
+  if (erro) {
+    return (
+      <div className="erro-container">
+        <h2>Ops! 😕</h2>
+        <p>{erro}</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="app-shell">
+
+      {/* PERFIL */}
+      <header className="perfil-container">
+
+        {perfil?.avatar_url && (
+          <img
+            src={perfil.avatar_url}
+            alt={perfil.name || perfil.login}
+            className="perfil-avatar"
+          />
+        )}
+
+        <div className="perfil-info">
+
+          <h1 className="perfil-nome">
+            {perfil.name || 'Nome não cadastrado'}
+          </h1>
+
+          <p className="perfil-username">
+            @{perfil?.login}
+          </p>
+
+          <p className="perfil-bio">
+            {perfil?.bio || 'Sem biografia disponível'}
+          </p>
+
+          <div className="perfil-badge">
+            <strong>{perfil?.public_repos || 0}</strong>
+            {' '}repositórios públicos
+          </div>
+
+          {/* Link para o perfil do GitHub */}
+          {perfil?.html_url && (
+            <a
+              href={perfil.html_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="perfil-link"
+            >
+              Ver meu perfil no GitHub
+            </a>
+          )}
+
+        </div>
+      </header>
+
+      {/* PROJETOS */}
+      <main className="projetos-container">
+
+        <h2 className="projetos-titulo">
+          Meus Projetos
+        </h2>
+
+        <div className="projetos-grid">
+
+          {repositorios.length > 0 ? (
+            repositorios.map((repo) => (
+
+              <div
+                key={repo.id}
+                className="projeto-card"
+              >
+
+                <a
+                  href={repo.html_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="projeto-link"
+                >
+                  {repo.name}
+                </a>
+
+                <p className="projeto-descricao">
+                  {repo.description ||
+                    'Sem descrição cadastrada neste repositório.'}
+                </p>
+
+                {repo.language && (
+                  <p className="projeto-linguagem">
+                    Linguagem: {repo.language}
+                  </p>
+                )}
+
+              </div>
+
+            ))
+          ) : (
+            <p>
+              Nenhum repositório público encontrado.
+            </p>
+          )}
+
+        </div>
+
+      </main>
+
+    </div>
+  );
+}
+
+export default App;
