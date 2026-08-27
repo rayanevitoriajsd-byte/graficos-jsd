@@ -1,0 +1,14 @@
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; min-height: 100vh; background: #f2f5f5; color: var(--ink); font-family: var(--font-body); -webkit-font-smoothing: antialiased; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: 330px; z-index: -1; background: radial-gradient(circle at 16% -10%, rgba(184,217,91,.18), transparent 40%), linear-gradient(180deg, #e9f0ef 0, rgba(242,245,245,0) 100%); }
+h1, h2, h3, p { margin: 0; }
+h1, h2, h3, strong { font-family: var(--font-display); }
+button, select { font: inherit; }
+button, summary, select { cursor: pointer; }
+button { border: 0; }
+button:focus-visible, select:focus-visible, summary:focus-visible { outline: 3px solid rgba(20,93,86,.22); outline-offset: 2px; }
+[hidden] { display: none !important; }
+.rl-icon { width: 18px; height: 18px; display: inline-flex; flex: 0 0 auto; }
+.rl-icon svg { width: 100%; height: 100%; }
+::selection { background: rgba(184,217,91,.5); }
